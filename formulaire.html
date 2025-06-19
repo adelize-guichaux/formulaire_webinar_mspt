@@ -1,0 +1,97 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Formulaire NEOMA</title>
+</head>
+<body>
+
+<form id="form-programmes" onsubmit="return validerFormulaire();">
+  <label for="categorie">Je suis intéressé(e) par un/des programme(s) dans la catégorie suivante *</label><br>
+  <select id="categorie" name="categorie" required onchange="afficherProgrammes()">
+    <option value="">Sélectionnez votre réponse</option>
+    <option value="finance">Finance</option>
+    <option value="marketing">Marketing et Communication</option>
+    <option value="management">Management et Stratégie</option>
+  </select>
+
+  <div id="programmes-finance" class="programme-bloc" style="display:none; margin-top:15px;">
+    <p><strong>Programmes Finance *</strong></p>
+    <label><input type="checkbox" name="programme_finance[]" value="Prépa MSc Alternance BAC+3"> Année Préparatoire pour un MSc en Alternance (pour les BAC+3)</label><br>
+    <label><input type="checkbox" name="programme_finance[]" value="MSc Finance & Big Data"> MSc Finance & Big Data</label><br>
+    <label><input type="checkbox" name="programme_finance[]" value="MS Analyse Financière Internationale"> MS/MSc Analyse Financière Internationale</label>
+  </div>
+
+  <div id="programmes-marketing" class="programme-bloc" style="display:none; margin-top:15px;">
+    <p><strong>Programmes Marketing et Communication *</strong></p>
+    <label><input type="checkbox" name="programme_marketing[]" value="Prépa MSc Alternance BAC+3"> Année Préparatoire pour un MSc en Alternance (pour les BAC+3)</label><br>
+    <label><input type="checkbox" name="programme_marketing[]" value="MSc Communication d’Entreprise"> MSc Communication d’Entreprise</label><br>
+    <label><input type="checkbox" name="programme_marketing[]" value="MSc Études & Décision Marketing"> MS/MSc Études & Décision Marketing</label><br>
+    <label><input type="checkbox" name="programme_marketing[]" value="MSc Marketing & Data Analytics"> MS/MSc Marketing & Data Analytics</label>
+  </div>
+
+  <div id="programmes-management" class="programme-bloc" style="display:none; margin-top:15px;">
+    <p><strong>Programmes Management et Stratégie *</strong></p>
+    <label><input type="checkbox" name="programme_management[]" value="Prépa MSc Alternance BAC+3"> Année Préparatoire pour un MSc en Alternance (pour les BAC+3)</label><br>
+    <label><input type="checkbox" name="programme_management[]" value="Business Dev & Grands Comptes"> MSc Business Development & Clients Grands Comptes</label><br>
+    <label><input type="checkbox" name="programme_management[]" value="Innovation Agro/Bio"> MS Management de l’innovation dans les Agro-activités et Bio-industries (Masternova)</label><br>
+    <label><input type="checkbox" name="programme_management[]" value="Management de Projet"> MSc Management de Projet</label><br>
+    <label><input type="checkbox" name="programme_management[]" value="Supply Chain & Transformation Digitale"> MSc Supply Chain & Transformation Digitale</label>
+  </div>
+
+  <div style="margin-top:15px;">
+    <label for="questions"><strong>Posez vos questions dès maintenant, nous y répondrons pendant le live :</strong></label><br>
+    <textarea id="questions" name="questions" rows="4" cols="50" placeholder="Votre question..."></textarea>
+  </div>
+
+  <div style="margin-top:15px;">
+    <label><input type="checkbox" id="consentement" required>
+      Oui, J’autorise NEOMA Business School à m’envoyer des informations ciblées selon mes intérêts, et à conserver mes données personnelles en accord avec le RGPD et les <a href="https://neoma-bs.fr/informations-legales/" target="_blank">mentions légales</a>.
+    </label>
+  </div>
+
+  <div style="margin-top:20px;">
+    <button type="submit">Valider</button>
+  </div>
+</form>
+
+<script>
+function afficherProgrammes() {
+  const cat = document.getElementById("categorie").value;
+  document.getElementById("programmes-finance").style.display = "none";
+  document.getElementById("programmes-marketing").style.display = "none";
+  document.getElementById("programmes-management").style.display = "none";
+
+  if (cat === "finance") document.getElementById("programmes-finance").style.display = "block";
+  if (cat === "marketing") document.getElementById("programmes-marketing").style.display = "block";
+  if (cat === "management") document.getElementById("programmes-management").style.display = "block";
+}
+
+function validerFormulaire() {
+  const cat = document.getElementById("categorie").value;
+  if (!cat) {
+    alert("Veuillez sélectionner une catégorie.");
+    return false;
+  }
+
+  // Vérifier qu'au moins un programme est coché selon la catégorie
+  let bloc;
+  if (cat === "finance") bloc = document.getElementsByName("programme_finance[]");
+  if (cat === "marketing") bloc = document.getElementsByName("programme_marketing[]");
+  if (cat === "management") bloc = document.getElementsByName("programme_management[]");
+
+  const auMoinsUnCoche = Array.from(bloc).some(cb => cb.checked);
+  if (!auMoinsUnCoche) {
+    alert("Veuillez sélectionner au moins un programme dans la catégorie choisie.");
+    return false;
+  }
+
+  // Tout est ok
+  alert("Formulaire soumis !");
+  return false; // mets `true` si tu veux laisser le formulaire s'envoyer vers un backend ou Power Automate
+}
+</script>
+
+</body>
+</html>
